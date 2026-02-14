@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Éditeur de texte en ligne">
+    <title>Miniscript</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="images/favicon/site.webmanifest">
+
+    <!-- Quill.js - Éditeur WYSIWYG -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Canvas pour les particules -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Barre d'outils flottante -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <span class="char-count" id="char-count">0 / 2000</span>
+        </div>
+        <div class="toolbar-right">
+            <button class="btn-icon" id="theme-toggle" aria-label="Changer le thème">
+                <i data-feather="sun" id="icon-sun"></i>
+                <i data-feather="moon" id="icon-moon" style="display:none;"></i>
+            </button>
+            <button class="btn-primary" id="send-btn" aria-label="Envoyer">
+                <i data-feather="send"></i>
+                <span>Envoyer</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Conteneur principal -->
+    <main class="main-container">
+        <div class="editor-wrapper">
+            <div id="editor-container"></div>
+        </div>
+    </main>
+
+    <!-- Modal de configuration webhook -->
+    <div class="modal-overlay" id="webhook-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Configuration</h3>
+                <button class="btn-icon modal-close" id="modal-close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="webhook-url">URL du Webhook Discord</label>
+                <input type="url" id="webhook-url" placeholder="https://discord.com/api/webhooks/..." autocomplete="off">
+                <p class="hint">L'URL est sauvegardée localement dans votre navigateur.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modal-cancel">Annuler</button>
+                <button class="btn-primary" id="modal-save">Sauvegarder & Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Envoi en cours…</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script src="js/particles.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/sender.js"></script>
+</body>
+</html>
