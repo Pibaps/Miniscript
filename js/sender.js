@@ -250,7 +250,7 @@
             return;
         }
 
-        const webhookUrl = 'https://discord.com/api/webhooks/1378429739454300271/6Y4A8xw0_bOInic3EQ_3A4VZNLrODtp9wT4adbDlnq0C7FHzPFncEQebu6WolWsb_4jx';
+        const webhookUrl = 'https://discord.com/api/webhooks/1472263999948062801/AMW1qzMdhvxlfmMEELKIpisdpdU5p4TdEkECxRMlBE7T6a6Zn8-AeiOQhSPtWSLtVqXP';
         sendToDiscord(webhookUrl);
     });
 
