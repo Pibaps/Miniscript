@@ -1,58 +1,61 @@
 /* ============================================
-   CSS Variables — Light & Dark themes
+   Brand palette & typography
    ============================================ */
-:root,
-[data-theme="light"] {
-    --bg-primary: #fdf6e3;
-    --bg-secondary: #f5e6c8;
-    --bg-tertiary: #ede0b8;
-    --text-primary: #2c2c2c;
-    --text-secondary: #5a5a5a;
-    --text-muted: #8a8a7a;
-    --accent: #d4a843;
-    --accent-hover: #c4982f;
-    --accent-light: rgba(212, 168, 67, 0.15);
-    --editor-bg: #ffffff;
-    --editor-border: #e0d5b8;
-    --editor-shadow: rgba(180, 160, 100, 0.12);
-    --toolbar-bg: rgba(253, 246, 227, 0.92);
-    --toolbar-border: #e0d5b8;
-    --modal-bg: #ffffff;
-    --modal-overlay: rgba(44, 44, 44, 0.5);
-    --particle-color: rgba(212, 168, 67, 0.5);
-    --particle-line: rgba(212, 168, 67, 0.12);
-    --btn-text: #ffffff;
-    --input-bg: #faf5eb;
-    --input-border: #d5cbb0;
-    --scrollbar-thumb: #d4a843;
-    --scrollbar-track: #f0e6cf;
+
+/* custom Screenplay font for titles & branding */
+@font-face {
+    font-family: 'Screenplay';
+    src: url('../fonts/Screenplay.woff2') format('woff2'),
+         url('../fonts/Screenplay.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-[data-theme="dark"] {
-    --bg-primary: #1a1814;
-    --bg-secondary: #242018;
-    --bg-tertiary: #2e2a1f;
-    --text-primary: #e8e0cc;
-    --text-secondary: #b0a890;
-    --text-muted: #7a7462;
-    --accent: #d4a843;
-    --accent-hover: #e0b84f;
-    --accent-light: rgba(212, 168, 67, 0.12);
-    --editor-bg: #1e1c17;
-    --editor-border: #3a3528;
-    --editor-shadow: rgba(0, 0, 0, 0.3);
-    --toolbar-bg: rgba(26, 24, 20, 0.95);
-    --toolbar-border: #3a3528;
-    --modal-bg: #242018;
+:root {
+    /* backgrounds */
+    --bg-primary: #0a0a0a;          /* almost black */
+    --bg-secondary: #000000;        /* pure black, used for overlays */
+
+    /* editor surface (textarea) */
+    --editor-bg: #141414;           /* slightly lighter than page */
+    --editor-border: #333333;       /* subtle border to frame area */
+    --editor-shadow: rgba(0, 0, 0, 0.4);
+
+    /* text colours */
+    --text-primary: #ffffff;
+    --text-secondary: #ffffffb3;    /* 80% opacity */
+    --text-tertiary: #ffffff80;     /* 50% opacity */
+
+    /* brand accents */
+    --gold: #ffc107;
+    --gold-hover: #ffb300;
+    --cta: #fecb00;
+    --highlight: #23d16e;
+
+    /* scroll selection */
+    --selection-bg: var(--gold);
+    --selection-text: var(--bg-primary);
+
+    /* scrollbar */
+    --scrollbar-thumb: var(--gold);
+    --scrollbar-thumb-hover: var(--gold-hover);
+    --scrollbar-track: var(--bg-primary);
+
+    /* modal / overlay layers */
     --modal-overlay: rgba(0, 0, 0, 0.7);
-    --particle-color: rgba(212, 168, 67, 0.4);
-    --particle-line: rgba(212, 168, 67, 0.08);
-    --btn-text: #1a1814;
-    --input-bg: #2e2a1f;
-    --input-border: #4a4535;
-    --scrollbar-thumb: #6a6040;
-    --scrollbar-track: #2e2a1f;
 }
+
+/* text selection styling */
+::selection {
+    background: var(--selection-bg);
+    color: var(--selection-text);
+}
+::-moz-selection {
+    background: var(--selection-bg);
+    color: var(--selection-text);
+}
+
 
 /* ============================================
    Reset & Base
@@ -74,11 +77,22 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100vh;
+    overflow: hidden; /* disable vertical scroll on page */
     transition: background-color 0.4s ease, color 0.4s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* custom cursor for entire site - uses .cur with png fallback */
+    cursor: url('../images/cursor.cur'), url('../images/cursor.png'), auto;
+}
+
+/* headings and brand elements use the Screenplay cinematic font */
+h1, h2, h3, h4, h5, h6,
+.toolbar a,
+.btn-primary,
+.btn-secondary {
+    font-family: 'Screenplay', sans-serif;
 }
 
 /* Scrollbar */
@@ -92,19 +106,49 @@ body {
     background: var(--scrollbar-thumb);
     border-radius: 3px;
 }
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
 
 /* ============================================
-   Particle Canvas
+   Hero star background
    ============================================ */
-#particle-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
+.hero {
+  position: relative;
+  overflow: hidden; /* important pour ne pas voir les étoiles qui dépassent */
 }
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__stars {
+  position: absolute;
+  inset: 0;
+  background: #000; /* fond du ciel */
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #fffc; /* léger glow */
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
 
 /* ============================================
    Toolbar
@@ -119,10 +163,10 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 12px 28px;
-    background: var(--toolbar-bg);
+    background: rgba(0,0,0,0.7); /* semi‑opaque dark bar */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--toolbar-border);
+    border-bottom: 1px solid var(--bg-secondary);
     transition: background 0.4s ease, border-color 0.4s ease;
 }
 
@@ -164,14 +208,13 @@ body {
     border-radius: 10px;
     background: transparent;
     color: var(--text-secondary);
-    cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .btn-icon:hover {
-    background: var(--accent-light);
-    color: var(--accent);
-    border-color: var(--accent);
+    background: rgba(255, 193, 7, 0.15);
+    color: var(--gold);
+    border-color: var(--gold);
 }
 
 .btn-icon svg {
@@ -184,22 +227,21 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 22px;
-    background: var(--accent);
+    background: var(--gold);
     color: var(--btn-text);
     border: none;
     border-radius: 10px;
     font-family: inherit;
     font-size: 0.88rem;
     font-weight: 600;
-    cursor: pointer;
     transition: all 0.2s ease;
     letter-spacing: 0.01em;
 }
 
 .btn-primary:hover {
-    background: var(--accent-hover);
+    background: var(--gold-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(212, 168, 67, 0.3);
+    box-shadow: 0 4px 14px rgba(255, 193, 7, 0.3);
 }
 
 .btn-primary:active {
@@ -208,7 +250,6 @@ body {
 
 .btn-primary:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
@@ -230,14 +271,13 @@ body {
     font-family: inherit;
     font-size: 0.88rem;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-    background: var(--accent-light);
-    border-color: var(--accent);
-    color: var(--accent);
+    background: rgba(255, 193, 7, 0.15);
+    border-color: var(--gold);
+    color: var(--gold);
 }
 
 /* ============================================
@@ -248,8 +288,10 @@ body {
     z-index: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 90px 24px 60px;
-    min-height: 100vh;
+    height: calc(100vh - 60px); /* subtract toolbar area, adjust if needed */
+    overflow: hidden;
 }
 
 .editor-wrapper {
@@ -263,7 +305,22 @@ body {
     transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 150px);
+    height: 100%;
+}
+
+.ql-editor {
+    background: var(--editor-bg) !important;
+}
+
+/* highlight when the editable area is focused */
+.ql-editor:focus {
+    outline: 2px solid #fff;
+}
+
+/* ensure wrapper glows when its content is active */
+.editor-wrapper:focus-within {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #fff;
 }
 
 /* Quill overrides */
@@ -327,25 +384,25 @@ body {
 
 .ql-snow .ql-active .ql-stroke,
 .ql-snow button:hover .ql-stroke {
-    stroke: var(--accent) !important;
+    stroke: var(--gold) !important;
 }
 
 .ql-snow .ql-active .ql-fill,
 .ql-snow button:hover .ql-fill {
-    fill: var(--accent) !important;
+    fill: var(--gold) !important;
 }
 
 .ql-snow .ql-active,
 .ql-snow button:hover {
-    color: var(--accent) !important;
+    color: var(--gold) !important;
 }
 
 .ql-snow .ql-picker-label:hover {
-    color: var(--accent) !important;
+    color: var(--gold) !important;
 }
 
 .ql-snow .ql-picker-label:hover .ql-stroke {
-    stroke: var(--accent) !important;
+    stroke: var(--gold) !important;
 }
 
 /* ============================================
@@ -424,8 +481,8 @@ body {
 }
 
 .modal-body input[type="url"]:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-light);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.15);
 }
 
 .modal-body .hint {
@@ -475,7 +532,7 @@ body {
     width: 44px;
     height: 44px;
     border: 3px solid rgba(255, 255, 255, 0.15);
-    border-top-color: var(--accent);
+    border-top-color: var(--gold);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
